@@ -7,7 +7,9 @@ import java.util.*
 object TokenUtil{
     private val secretKey = Keys.hmacShaKeyFor("f6BOAGB0uwxh7QusW5Vee81oPZVzCYTyAXcyH0nnX3U=".toByteArray())
 
-    // Access Token: 짧은 유효 기간 (15분)
+    /**
+     * Access Token: 짧은 유효 기간 (15분)
+     */
     fun generateAccessToken(email: String): String {
         return Jwts.builder()
             .setSubject(email)
@@ -17,7 +19,9 @@ object TokenUtil{
             .compact()
     }
 
-    // Refresh Token: 긴 유효 기간 (7일)
+    /**
+     * Refresh Token: 긴 유효 기간 (7일)
+     */
     fun generateRefreshToken(email: String): String {
         return Jwts.builder()
             .setSubject(email)
@@ -27,6 +31,9 @@ object TokenUtil{
             .compact()
     }
 
+    /**
+     * Jwt 토큰 검증
+     */
     fun validateToken(token: String): String? {
         return try {
             val claims = Jwts.parserBuilder()

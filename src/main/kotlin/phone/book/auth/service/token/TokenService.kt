@@ -6,13 +6,17 @@ import phone.book.auth.util.token.TokenUtil
 @Service
 class TokenService {
     /**
-     * Jwt 토큰 생성
+     * Jwt 엑세스 토큰 생성
      */
-    fun generateToken(email: String): Map<String, String> {
-        return mapOf(
-            "accessToken" to TokenUtil.generateAccessToken(email),
-            "refreshToken" to TokenUtil.generateRefreshToken(email)
-        )
+    fun generateAccessToken(email: String): String {
+        return TokenUtil.generateAccessToken(email)
+    }
+
+    /**
+     * Jwt 리프레시 토큰 생성
+     */
+    fun generateRefreshToken(email: String): String {
+        return TokenUtil.generateRefreshToken(email)
     }
 
     /**

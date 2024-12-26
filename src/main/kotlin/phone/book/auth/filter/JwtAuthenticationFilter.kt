@@ -34,7 +34,6 @@ class JwtAuthenticationFilter(
                         null, // Credentials (JWT 사용 시 null)
                         null // Authorities
                     )
-                    println("authentication: $authentication")
                     SecurityContextHolder.getContext().authentication = authentication
                 }
             }
