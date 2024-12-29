@@ -35,7 +35,6 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.mysql:mysql-connector-j")
-    implementation("io.github.cdimascio:java-dotenv:5.2.2")
 }
 
 kotlin {
