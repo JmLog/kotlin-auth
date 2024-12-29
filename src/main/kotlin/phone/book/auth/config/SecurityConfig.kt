@@ -28,7 +28,7 @@ class SecurityConfig{
             .authorizeHttpRequests {
                 it.requestMatchers(
                     "/login",
-                    "/signup"
+                    "/auth/signup"
                 ).permitAll() // 인증 없이 허용
                     .anyRequest()
                     .authenticated() // 나머지 요청은 인증 필요

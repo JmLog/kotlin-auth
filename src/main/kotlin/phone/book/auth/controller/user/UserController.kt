@@ -1,33 +1,24 @@
 package phone.book.auth.controller.user
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.*
 import phone.book.auth.dto.ApiResponse
-import phone.book.auth.dto.user.LoginRequest
+import phone.book.auth.dto.user.UserDto
 import phone.book.auth.entity.User
-import phone.book.auth.service.user.LoginService
+import phone.book.auth.service.user.UserService
 
 @RestController
+@RequestMapping("/auth")
 class UserController(
-    private val loginService: LoginService
+    private val userService: UserService
 ) {
-
-    @GetMapping("/")
-    fun home(): String {
-        return "Hello, World!"
-    }
-
-
-    @PostMapping("/login")
-    fun login(@RequestBody loginRequest: LoginRequest): ApiResponse<User> {
+    @PostMapping("/signup")
+    fun signup(@Valid @RequestBody userDto: UserDto): ApiResponse<User> {
         try {
-            val user = loginService.login(loginRequest)
             return ApiResponse(
                 code = 200,
-                message = "로그인 성공",
-                data = user
+                message = "가입에 성공했습니다.",
+                data = userService.signup(userDto = userDto)
             )
         } catch (e: IllegalArgumentException) {
             return ApiResponse(

@@ -1,26 +1,55 @@
 package phone.book.auth.controller.auth
 
-import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import phone.book.auth.dto.ApiResponse
-import phone.book.auth.dto.auth.UserRequest
+import phone.book.auth.dto.auth.LoginDto
+import phone.book.auth.dto.auth.LogoutDto
 import phone.book.auth.entity.User
 import phone.book.auth.service.auth.AuthService
 
 @RestController
-@RequestMapping("/auth")
 class AuthController(
     private val authService: AuthService
 ) {
-    /**
-     * 회원가입
-     */
-    @PostMapping("/signup")
-    fun signup(@Valid @RequestBody userRequest: UserRequest): ApiResponse<User> {
-        return ApiResponse(
-            code = 200,
-            message = "가입에 성공했습니다.",
-            data = authService.signup(userRequest)
-        )
+    @GetMapping("/")
+    fun home(): String {
+        return "Hello, World!"
+    }
+
+    @PostMapping("/login")
+    fun login(@RequestBody loginDto: LoginDto): ApiResponse<User> {
+        try {
+            val user = authService.login(loginResult = loginDto)
+            return ApiResponse(
+                code = 200,
+                message = "로그인 성공",
+                data = user
+            )
+        } catch (e: IllegalArgumentException) {
+            return ApiResponse(
+                code = 400,
+                message = e.message ?: "로그인 실패"
+            )
+        }
+    }
+
+    @PostMapping("/logout")
+    fun logout(logoutDto: LogoutDto): ApiResponse<Any> {
+        try {
+            authService.logout(email = logoutDto.email)
+            return ApiResponse(
+                code = 200,
+                message = "로그아웃 성공",
+                data = null
+            )
+        } catch (e: IllegalArgumentException) {
+            return ApiResponse(
+                code = 400,
+                message = e.message ?: "로그아웃 실패"
+            )
+        }
     }
 }

@@ -26,13 +26,13 @@ class JwtAuthenticationFilter(
             val token = authorizationHeader.substring(7) // "Bearer " 이후의 토큰 추출
             val email = tokenService.validateToken(token) // 토큰 검증 및 이메일 추출
 
-            if (email != null) {
+            email?.let {
                 val user = userRepository.findByEmail(email) // 이메일로 사용자 조회
                 if (user != null) {
                     val authentication = UsernamePasswordAuthenticationToken(
                         user, // Principal
                         null, // Credentials (JWT 사용 시 null)
-                        null // Authorities
+                        listOf() // Authorities
                     )
                     SecurityContextHolder.getContext().authentication = authentication
                 }
