@@ -26,7 +26,8 @@ class JwtAuthenticationFilter(
             val token = authorizationHeader.substring(7) // "Bearer " 이후의 토큰 추출
             val email = tokenService.validateToken(token) // 토큰 검증 및 이메일 추출
 
-            email?.let {
+            // 토큰 검증 성공
+            if (email != null) {
                 val user = userRepository.findByEmail(email) // 이메일로 사용자 조회
                 if (user != null) {
                     val authentication = UsernamePasswordAuthenticationToken(
@@ -36,6 +37,18 @@ class JwtAuthenticationFilter(
                     )
                     SecurityContextHolder.getContext().authentication = authentication
                 }
+            } else {
+                response.contentType = "application/json"
+                response.characterEncoding = "UTF-8"
+                response.status = HttpServletResponse.SC_UNAUTHORIZED
+                response.writer.write(
+                    """{
+                        "code": 401,
+                        "message": "토큰이 유효하지 않습니다."
+                    }"""
+                )
+                response.writer.flush()
+                return
             }
         }
 

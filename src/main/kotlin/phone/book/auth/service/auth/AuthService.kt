@@ -1,6 +1,5 @@
 package phone.book.auth.service.auth
 
-import jakarta.validation.constraints.Email
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import phone.book.auth.dto.auth.LoginDto
@@ -35,6 +34,7 @@ class AuthService(
             null -> {
                 this.saveToken(user, accessToken = true, refreshToken = true)
             }
+
             else -> {
                 // access token 검증
                 val validateToken = tokenService.validateToken(accessToken)
@@ -77,8 +77,9 @@ class AuthService(
     fun saveToken(user: User, accessToken: Boolean = false, refreshToken: Boolean = false) {
         user.apply {
             if (accessToken) this.accessToken = tokenService.generateAccessToken(user.email)
-            if (refreshToken) this.accessToken = tokenService.generateRefreshToken(user.email)
+            if (refreshToken) this.refreshToken = tokenService.generateRefreshToken(user.email)
         }
+
         userRepository.save(user)
     }
 }

@@ -14,7 +14,7 @@ import phone.book.auth.service.token.TokenService
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig{
+class SecurityConfig {
 
     @Bean
     fun securityFilterChain(
@@ -25,8 +25,10 @@ class SecurityConfig{
             .httpBasic { it.disable() }
             .csrf { it.disable() }
             .formLogin { it.disable() }
+            .logout { it.disable() } // 기본 로그아웃 동작 비활성화
             .authorizeHttpRequests {
                 it.requestMatchers(
+                    "/",
                     "/login",
                     "/auth/signup"
                 ).permitAll() // 인증 없이 허용

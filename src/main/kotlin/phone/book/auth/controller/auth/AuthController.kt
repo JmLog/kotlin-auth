@@ -1,5 +1,6 @@
 package phone.book.auth.controller.auth
 
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -16,6 +17,8 @@ class AuthController(
 ) {
     @GetMapping("/")
     fun home(): String {
+        val auth = SecurityContextHolder.getContext().authentication
+        println(auth)
         return "Hello, World!"
     }
 
@@ -37,7 +40,7 @@ class AuthController(
     }
 
     @PostMapping("/logout")
-    fun logout(logoutDto: LogoutDto): ApiResponse<Any> {
+    fun logout(@RequestBody logoutDto: LogoutDto): ApiResponse<Any> {
         try {
             authService.logout(email = logoutDto.email)
             return ApiResponse(

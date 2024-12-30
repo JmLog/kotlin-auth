@@ -13,7 +13,7 @@ class UserService(
     private val passwordEncoder: PasswordEncoder
 ) {
     fun signup(userDto: UserDto): User {
-        return try {
+        try {
             val password = passwordEncoder.encode(userDto.password)
             val user = User(
                 name = userDto.name,

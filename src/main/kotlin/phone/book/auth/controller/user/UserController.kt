@@ -1,6 +1,7 @@
 package phone.book.auth.controller.user
 
 import jakarta.validation.Valid
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import phone.book.auth.dto.ApiResponse
 import phone.book.auth.dto.user.UserDto
@@ -14,14 +15,14 @@ class UserController(
 ) {
     @PostMapping("/signup")
     fun signup(@Valid @RequestBody userDto: UserDto): ApiResponse<User> {
-        try {
-            return ApiResponse(
+        return try {
+            ApiResponse(
                 code = 200,
                 message = "가입에 성공했습니다.",
-                data = userService.signup(userDto = userDto)
+                data = userService.signup(userDto)
             )
         } catch (e: IllegalArgumentException) {
-            return ApiResponse(
+            ApiResponse(
                 code = 400,
                 message = e.message ?: "로그인 실패"
             )
